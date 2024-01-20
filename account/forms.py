@@ -2,6 +2,7 @@ from django import forms
 from .models import User
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
+from django.core import validators
 
 
 class UserCreationForm(forms.ModelForm):
@@ -49,15 +50,19 @@ class LoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
-    # def clean_phone(self):
-    #     phone = self.cleaned_data["phone"]
-    #     if len(phone) > 11:
-    #         raise ValidationError("Invalid phone number", code='invalid', params={'value': f'{phone}'})
-    #     return phone
-
     def clean(self):
         cd = super().clean()
         phone = cd['phone']
         if len(phone) > 11:
             raise ValidationError("Invalid phone number", code='invalid', params={'value': f'{phone}'})
         return phone
+
+
+class RegisterForm(forms.Form):
+    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            validators=[validators.MaxLengthValidator(11)])
+
+
+class CheckOtpForm(forms.Form):
+    code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
+                            validators=[validators.MaxLengthValidator(4)])
