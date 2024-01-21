@@ -50,12 +50,12 @@ class LoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
 
-    def clean(self):
-        cd = super().clean()
-        phone = cd['phone']
-        if len(phone) > 11:
-            raise ValidationError("Invalid phone number", code='invalid', params={'value': f'{phone}'})
-        return phone
+    # def clean(self):
+    #     cd = super().clean()
+    #     phone = cd['phone']
+    #     if len(phone) > 50:
+    #         raise ValidationError("Invalid phone number", code='invalid', params={'value': f'{phone}'})
+    #     return phone
 
 
 class RegisterForm(forms.Form):
