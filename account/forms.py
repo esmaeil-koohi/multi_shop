@@ -43,12 +43,22 @@ class UserChangeForm(forms.ModelForm):
 
     class Meta:
         model = User
-        fields = ["phone", "password", "is_active", "is_admin"]
+        fields = ["phone", "email", "password", "is_active", "is_admin"]
 
 
 class LoginForm(forms.Form):
-    phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control'}))
+
+    def clean_username(self):
+        username = self.cleaned_data.get('username')
+        if len(username) > 100:
+            raise ValidationError(
+                'Invalid value: %(value)s is invalid',
+                code='invalid',
+                params={'value': f'{username}'},
+            )
+        return username
 
     # def clean(self):
     #     cd = super().clean()
@@ -58,11 +68,12 @@ class LoginForm(forms.Form):
     #     return phone
 
 
-class RegisterForm(forms.Form):
+class OtpLoginForm(forms.Form):
     phone = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
                             validators=[validators.MaxLengthValidator(11)])
 
 
+
 class CheckOtpForm(forms.Form):
     code = forms.CharField(widget=forms.TextInput(attrs={'class': 'form-control'}),
-                            validators=[validators.MaxLengthValidator(4)])
+                           validators=[validators.MaxLengthValidator(4)])
