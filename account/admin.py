@@ -2,9 +2,8 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.models import Group
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
-from account.models import User,Otp
-from .forms import UserCreationForm,UserChangeForm
-
+from account.models import User, Otp, Address
+from .forms import UserCreationForm, UserChangeForm
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -15,7 +14,7 @@ class UserAdmin(admin.ModelAdmin):
     # The fields to be used in displaying the User model.
     # These override the definitions on the base UserAdmin
     # that reference specific fields on auth.User.
-    list_display = ["phone","email", "is_admin"]
+    list_display = ["phone", "email", "is_admin"]
     list_filter = ["is_admin"]
     fieldsets = [
         (None, {"fields": ["email", "password"]}),
@@ -29,7 +28,7 @@ class UserAdmin(admin.ModelAdmin):
             None,
             {
                 "classes": ["wide"],
-                "fields": ["email", "fullname","password1", "password2"],
+                "fields": ["email", "fullname", "password1", "password2"],
             },
         ),
     ]
@@ -38,6 +37,7 @@ class UserAdmin(admin.ModelAdmin):
     filter_horizontal = []
 
 
+admin.site.register(Address)
 # Now register the new UserAdmin...
 admin.site.register(User, UserAdmin)
 admin.site.register(Otp)

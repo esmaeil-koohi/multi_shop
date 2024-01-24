@@ -34,7 +34,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser):
-    email = models.EmailField(verbose_name="آدرس ایمیل",max_length=100,null=True,blank=True,unique=True,)
+    email = models.EmailField(verbose_name="آدرس ایمیل", max_length=100, null=True, blank=True, unique=True, )
     fullname = models.CharField(max_length=50, verbose_name="نام کامل")
     phone = models.CharField(max_length=12, unique=True, verbose_name="شماره تلفن")
     is_active = models.BooleanField(default=True)
@@ -76,3 +76,15 @@ class Otp(models.Model):
 
     def __str__(self):
         return self.phone
+
+
+class Address(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="addresses")
+    fullname = models.CharField(max_length=30)
+    email = models.EmailField()
+    phone = models.CharField(max_length=12)
+    address = models.CharField(max_length=300)
+    postal_code = models.CharField(max_length=30)
+
+    def __str__(self):
+        return self.user.phone
