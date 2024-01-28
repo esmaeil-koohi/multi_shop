@@ -20,6 +20,7 @@ class OrderItem(models.Model):
     color = models.CharField(max_length=12)
     quantity = models.SmallIntegerField()
     price = models.PositiveIntegerField()
+    address = models.TextField(blank=True, null=True)
 
 
 class DiscountCode(models.Model):
